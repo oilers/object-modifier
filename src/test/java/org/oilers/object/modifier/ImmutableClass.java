@@ -40,6 +40,7 @@ class ImmutableClass {
 		return testBigInteger;
 	}
 
+	@SuppressWarnings("unused")
 	private Object getPrivateAccessor() {
 		return privateAccessor;
 	}
