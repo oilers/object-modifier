@@ -9,7 +9,6 @@ class ImmutableClass {
 	private final Long testLong = 0L;
 	private final Object testObject = new Object();
 	private final BigInteger testBigInteger = BigInteger.ONE;
-	@SuppressWarnings("unused")
 	private final Object noAccessor = new Object();
 	private final Object privateAccessor = new Object();
 
@@ -41,7 +40,6 @@ class ImmutableClass {
 		return testBigInteger;
 	}
 
-	@SuppressWarnings("unused")
 	private Object getPrivateAccessor() {
 		return privateAccessor;
 	}
