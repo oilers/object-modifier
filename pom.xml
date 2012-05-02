@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>object-modifier</name>
-  <url>http://maven.apache.org</url>
+  <url>https://bitbucket.org/oilers/object-modifier</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
