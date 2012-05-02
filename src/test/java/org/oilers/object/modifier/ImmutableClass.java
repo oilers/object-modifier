@@ -2,6 +2,9 @@ package org.oilers.object.modifier;
 
 import java.math.BigInteger;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 class ImmutableClass {
 	private final String test = "test";
 	private final String test_1;
@@ -40,8 +43,21 @@ class ImmutableClass {
 		return testBigInteger;
 	}
 
-	@SuppressWarnings("unused")
 	private Object getPrivateAccessor() {
 		return privateAccessor;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (! (obj instanceof ImmutableClass))
+			return false;
+		if (this == obj)
+			return true;
+		return EqualsBuilder.reflectionEquals(this, obj, false);
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this, false);
 	}
 }

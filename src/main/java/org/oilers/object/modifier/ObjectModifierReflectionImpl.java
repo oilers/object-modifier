@@ -17,8 +17,12 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	@Override
 	public void changeFields(T obj) throws Exception {
 		for (Field field : obj.getClass().getDeclaredFields())
-			if (!field.isSynthetic())
+			if (isFieldEligbleForChange(field))
 				changeField(obj, field, replacementObjects.get(field.getType()));
+	}
+
+	private boolean isFieldEligbleForChange(Field field) {
+		return !field.isSynthetic() && replacementObjects.containsKey(field.getType());
 	}
 
 	@Override

@@ -3,8 +3,6 @@ package org.oilers.object.modifier;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-import org.oilers.object.modifier.ObjectModifier;
-import org.oilers.object.modifier.ObjectModifierFactory;
 
 public class ObjectModifierReflectionImplTest {
 	@Test
@@ -15,5 +13,6 @@ public class ObjectModifierReflectionImplTest {
 		modifier.changeFields(imClass);
 		String postState = modifier.getState(imClass);
 		assertFalse(preState.equals(postState));
+		assertFalse(imClass.equals(new ImmutableClass()));
 	}
 }
