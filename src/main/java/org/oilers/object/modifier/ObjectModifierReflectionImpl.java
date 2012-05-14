@@ -1,7 +1,6 @@
 package org.oilers.object.modifier;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
@@ -15,7 +14,7 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	}
 
 	@Override
-	public void changeFields(T obj) throws Exception {
+	public void changeFields(T obj) throws ReflectiveOperationException {
 		for (Field field : obj.getClass().getDeclaredFields())
 			if (isFieldEligbleForChange(field))
 				changeField(obj, field, replacementObjects.get(field.getType()));
@@ -26,7 +25,7 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	}
 
 	@Override
-	public void changeField(T obj, Field field, Object value) throws Exception {
+	public void changeField(T obj, Field field, Object value) throws ReflectiveOperationException {
 		boolean isAccessible = field.isAccessible();
 		field.setAccessible(true);
 		field.set(obj, value);
@@ -34,7 +33,7 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	}
 
 	@Override
-	public String getState(T obj) throws Exception {
+	public String getState(T obj) throws ReflectiveOperationException {
 		StringBuffer objectState = new StringBuffer("State of ").append(obj).append('\n');
 		for (Field field : obj.getClass().getDeclaredFields())
 			if (!field.isSynthetic())
@@ -44,7 +43,7 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	}
 
 	@Override
-	public String getFieldState(T obj, Field field) throws Exception {
+	public String getFieldState(T obj, Field field) throws ReflectiveOperationException {
 		String propertyName = getPropertyName(field.getName());
 		Method method = findAccesorMethod(obj, propertyName);
 		return getFieldString(field, obj, method).toString();
@@ -68,13 +67,12 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	}
 
 	private StringBuffer getFieldString(Field field, T obj, Method method)
-			throws IllegalAccessException, InvocationTargetException {
+			throws ReflectiveOperationException {
 		return new StringBuffer(Modifier.toString(field.getModifiers())).append(" ")
 				.append(field.getName()).append(" = ").append(invokeMethod(obj, method));
 	}
 
-	private Object invokeMethod(T obj, Method method) throws IllegalAccessException,
-			InvocationTargetException {
+	private Object invokeMethod(T obj, Method method) throws ReflectiveOperationException {
 		if (!isMethodNullOrNonPublic(method)) {
 			boolean isAccessable = method.isAccessible();
 			method.setAccessible(true);
@@ -90,12 +88,13 @@ final class ObjectModifierReflectionImpl<T> implements ObjectModifier<T> {
 	}
 
 	@Override
-	public void changeField(T obj, String fieldName, Object newValue) throws Exception {
+	public void changeField(T obj, String fieldName, Object newValue)
+			throws ReflectiveOperationException {
 		Field field = findField(fieldName, obj.getClass());
 		changeField(obj, field, newValue);
 	}
 
-	private Field findField(String fieldName, Class<?> clazz) throws Exception {
+	private Field findField(String fieldName, Class<?> clazz) throws ReflectiveOperationException {
 		return clazz.getDeclaredField(fieldName);
 	}
 }
